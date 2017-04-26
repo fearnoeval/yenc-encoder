@@ -24,7 +24,7 @@ public final class YencEncoder {
   // Helper for lookup tables
 
   private static final boolean[] makeLookupTable(final byte... criticalCharacters) {
-    boolean[] lookupTable = new boolean[256];
+    final boolean[] lookupTable = new boolean[256];
 
     for (int i = 0; i < lookupTable.length; ++i) {
       lookupTable[i] = false;
