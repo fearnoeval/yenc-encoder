@@ -10,16 +10,16 @@ public final class YencEncoder {
 
   // Critical characters
 
-  private static final byte null_           = '\0';
-  private static final byte carriageReturn  = '\r';
-  private static final byte lineFeed        = '\n';
-  private static final byte escapeCharacter = '=';
+  private static final byte null_           = 0;
+  private static final byte carriageReturn  = 13;
+  private static final byte lineFeed        = 10;
+  private static final byte escapeCharacter = 61;
 
   // Semi-critical characters
 
-  private static final byte tab             = '\t';
-  private static final byte space           = ' ';
-  private static final byte dot             = '.';
+  private static final byte tab             = 9;
+  private static final byte space           = 32;
+  private static final byte dot             = 46;
 
   // Helper for lookup tables
 
