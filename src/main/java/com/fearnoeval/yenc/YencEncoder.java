@@ -1,6 +1,7 @@
 package com.fearnoeval.yenc;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public final class YencEncoder {
 
@@ -76,5 +77,21 @@ public final class YencEncoder {
     destination.put(lineFeed);
 
     return destination.position() - startingPosition;
+  }
+
+  // Header and trailer methods
+
+  private static final String multiPartHeader      = "=ybegin part=%d total=%d line=%d size=%d name=%s\r\n=ypart begin=%d end=%d\r\n";
+  private static final String multiPartTrailer     = "=yend size=%d part=%d pcrc32=%s\r\n.\r\n";
+  private static final String multiPartTrailerLast = "=yend size=%d part=%d pcrc32=%s crc32=%s\r\n.\r\n";
+
+  public static final byte[] multiPartHeader(final long part, final long total, final long line, final long size, final String name, final long begin, final long end) {
+    return String.format(multiPartHeader, part, total, line, size, name, begin, end).getBytes(StandardCharsets.UTF_8);
+  }
+  public static final byte[] multiPartTrailer(final long size, final long part, final long pcrc32) {
+    return String.format(multiPartTrailer, size, part, Long.toHexString(pcrc32)).getBytes(StandardCharsets.UTF_8);
+  }
+  public static final byte[] multiPartTrailerLast(final long size, final long part, final long pcrc32, final long crc32) {
+    return String.format(multiPartTrailerLast, size, part, Long.toHexString(pcrc32), Long.toHexString(crc32)).getBytes(StandardCharsets.UTF_8);
   }
 }
