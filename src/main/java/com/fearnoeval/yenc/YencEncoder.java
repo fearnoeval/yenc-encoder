@@ -1,7 +1,11 @@
 package com.fearnoeval.yenc;
 
-import java.nio.ByteBuffer;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.zip.CRC32;
+
+import java.io.IOException;
 
 public final class YencEncoder {
 
@@ -46,37 +50,51 @@ public final class YencEncoder {
 
   // Encoding
 
-  public static int encode(final ByteBuffer source, final ByteBuffer destination, final int articleSize, final int lineSize) {
-    final int startingPosition = destination.position();
+  public static void encode(final InputStream source, final OutputStream destination, final int articleSize, final int lineSize, final CRC32 crc32, final CRC32 pcrc32) throws IOException {
     final int lastColumn = lineSize - 1;
-    byte b;
-    int  i;
 
-    for (int column = 0; source.hasRemaining();) {
-      b = (byte) (source.get() + 42);
-      i = b & 0xFF;
+    int     bytesRead      = 0;
+    int     column         = 0;
+    boolean shouldContinue = true;
 
-      if (isCritical[i] || (column == 0 && isLeadingCritical[i]) || (column == lastColumn && isTrailingCritical[i])) {
-        destination.put(escapeCharacter);
-        destination.put((byte) (i + 64));
-        column += 2;
+    int b;
+
+    while (shouldContinue) {
+      b = source.read();
+      ++bytesRead;
+
+      if (b == -1) {
+        break;
       }
       else {
-        destination.put((byte) i);
-        column += 1;
-      }
+        if (bytesRead >= articleSize) {
+          shouldContinue = false;
+        }
 
-      if (column > lastColumn) {
-        destination.put(carriageReturn);
-        destination.put(lineFeed);
-        column = 0;
+        pcrc32.update(b);
+        crc32.update(b);
+        b = (b + 42) & 0xFF;
+
+        if (isCritical[b] || ((column == 0) && isLeadingCritical[b]) || ((column == lastColumn) && isTrailingCritical[b])) {
+          destination.write(escapeCharacter);
+          destination.write((byte) (b + 64));
+          column += 2;
+        }
+        else {
+          destination.write((byte) b);
+          column += 1;
+        }
+
+        if ((column > lastColumn) && shouldContinue) {
+          destination.write(carriageReturn);
+          destination.write(lineFeed);
+          column = 0;
+        }
       }
     }
 
-    destination.put(carriageReturn);
-    destination.put(lineFeed);
-
-    return destination.position() - startingPosition;
+    destination.write(carriageReturn);
+    destination.write(lineFeed);
   }
 
   // Header and trailer methods
