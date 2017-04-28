@@ -81,22 +81,22 @@ public final class YencEncoder {
 
   // Header and trailer methods
 
-  private static final String crc32Format          = "%08x";
-  private static final String multiPartHeader      = "=ybegin part=%d total=%d line=%d size=%d name=%s\r\n=ypart begin=%d end=%d\r\n";
-  private static final String multiPartTrailer     = "=yend size=%d part=%d pcrc32=%s\r\n.\r\n";
-  private static final String multiPartTrailerLast = "=yend size=%d part=%d pcrc32=%s crc32=%s\r\n.\r\n";
+  private static final String crc32Format                = "%08x";
+  private static final String multiPartHeaderFormat      = "=ybegin part=%d total=%d line=%d size=%d name=%s\r\n=ypart begin=%d end=%d\r\n";
+  private static final String multiPartTrailerFormat     = "=yend size=%d part=%d pcrc32=%s\r\n.\r\n";
+  private static final String multiPartTrailerLastFormat = "=yend size=%d part=%d pcrc32=%s crc32=%s\r\n.\r\n";
 
   private static final String crc32ToString(final long crc32) {
     return String.format(crc32Format, crc32);
   }
 
   public static final byte[] multiPartHeader(final long part, final long total, final long line, final long size, final String name, final long begin, final long end) {
-    return String.format(multiPartHeader, part, total, line, size, name, begin, end).getBytes(StandardCharsets.UTF_8);
+    return String.format(multiPartHeaderFormat, part, total, line, size, name, begin, end).getBytes(StandardCharsets.UTF_8);
   }
   public static final byte[] multiPartTrailer(final long size, final long part, final long pcrc32) {
-    return String.format(multiPartTrailer, size, part, crc32ToString(pcrc32)).getBytes(StandardCharsets.UTF_8);
+    return String.format(multiPartTrailerFormat, size, part, crc32ToString(pcrc32)).getBytes(StandardCharsets.UTF_8);
   }
   public static final byte[] multiPartTrailerLast(final long size, final long part, final long pcrc32, final long crc32) {
-    return String.format(multiPartTrailerLast, size, part, crc32ToString(pcrc32), crc32ToString(crc32)).getBytes(StandardCharsets.UTF_8);
+    return String.format(multiPartTrailerLastFormat, size, part, crc32ToString(pcrc32), crc32ToString(crc32)).getBytes(StandardCharsets.UTF_8);
   }
 }
