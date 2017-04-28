@@ -97,9 +97,10 @@ public final class YencEncoder {
     destination.write(lineFeed);
   }
 
-  // Header and trailer methods
+  // String methods
 
   private static final String crc32Format                = "%08x";
+  private static final String multiPartSubjectFormat     = "%s [%d/%d] - \"%s\" yEnc (%d/%d)";
   private static final String multiPartHeaderFormat      = "=ybegin part=%d total=%d line=%d size=%d name=%s\r\n=ypart begin=%d end=%d\r\n";
   private static final String multiPartTrailerFormat     = "=yend size=%d part=%d pcrc32=%s\r\n.\r\n";
   private static final String multiPartTrailerLastFormat = "=yend size=%d part=%d pcrc32=%s crc32=%s\r\n.\r\n";
@@ -108,6 +109,9 @@ public final class YencEncoder {
     return String.format(crc32Format, crc32);
   }
 
+  public static final byte[] multiPartSubject(final String comment1, final long fileNumber, final long totalFiles, final String filename, final long partNumber, final long totalParts) {
+    return String.format(multiPartSubjectFormat, comment1, fileNumber, totalFiles, filename, partNumber, totalParts).getBytes(StandardCharsets.UTF_8);
+  }
   public static final byte[] multiPartHeader(final long partNumber, final long totalParts, final long lineSize, final long fileSize, final String name, final long beginByte, final long endByte) {
     return String.format(multiPartHeaderFormat, partNumber, totalParts, lineSize, fileSize, name, beginByte, endByte).getBytes(StandardCharsets.UTF_8);
   }
