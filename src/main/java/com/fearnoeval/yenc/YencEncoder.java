@@ -90,13 +90,13 @@ public final class YencEncoder {
     return String.format(crc32Format, crc32);
   }
 
-  public static final byte[] multiPartHeader(final long part, final long total, final long line, final long size, final String name, final long begin, final long end) {
-    return String.format(multiPartHeaderFormat, part, total, line, size, name, begin, end).getBytes(StandardCharsets.UTF_8);
+  public static final byte[] multiPartHeader(final long partNumber, final long totalParts, final long lineSize, final long fileSize, final String name, final long beginByte, final long endByte) {
+    return String.format(multiPartHeaderFormat, partNumber, totalParts, lineSize, fileSize, name, beginByte, endByte).getBytes(StandardCharsets.UTF_8);
   }
-  public static final byte[] multiPartTrailer(final long size, final long part, final long pcrc32) {
-    return String.format(multiPartTrailerFormat, size, part, crc32ToString(pcrc32)).getBytes(StandardCharsets.UTF_8);
+  public static final byte[] multiPartTrailer(final long partSize, final long partNumber, final long pcrc32) {
+    return String.format(multiPartTrailerFormat, partSize, partNumber, crc32ToString(pcrc32)).getBytes(StandardCharsets.UTF_8);
   }
-  public static final byte[] multiPartTrailerLast(final long size, final long part, final long pcrc32, final long crc32) {
-    return String.format(multiPartTrailerLastFormat, size, part, crc32ToString(pcrc32), crc32ToString(crc32)).getBytes(StandardCharsets.UTF_8);
+  public static final byte[] multiPartTrailerLast(final long partSize, final long partNumber, final long pcrc32, final long crc32) {
+    return String.format(multiPartTrailerLastFormat, partSize, partNumber, crc32ToString(crc32), crc32ToString(crc32)).getBytes(StandardCharsets.UTF_8);
   }
 }
