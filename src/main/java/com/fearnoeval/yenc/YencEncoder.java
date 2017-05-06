@@ -75,7 +75,7 @@ public final class YencEncoder {
         crc32.update(b);
         b = (b + 42) & 0xFF;
 
-        if (isCritical[b] || ((column == 0) && isLeadingCritical[b]) || ((column == lastColumn) && isTrailingCritical[b])) {
+        if (isCritical[b] || ((column == 0) && isLeadingCritical[b]) || (((column == lastColumn) || !shouldContinue) && isTrailingCritical[b])) {
           destination.write(escapeCharacter);
           destination.write((byte) (b + 64));
           column += 2;
