@@ -95,7 +95,9 @@ public final class YencEncoder {
       }
     }
 
-    destination.write(crlf);
+    if (column > 0) {
+      destination.write(crlf);
+    }
   }
 
   // String methods
