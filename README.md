@@ -1,6 +1,6 @@
 # YencEncoder
 
-A [yEnc](http://www.yenc.org/) encoder for Java
+A [yEnc](http://www.yenc.org/) encoding library for Java
 
 ## Coming attractions
 
