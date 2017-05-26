@@ -6,9 +6,6 @@ A [yEnc](http://www.yenc.org/) encoding library for Java
 
 - Defaults
 - Usage
-- yEnc header and trailer support
-- Worst-case size calculation
-- Tests
 
 ## License
 
