@@ -102,15 +102,10 @@ public final class YencEncoder {
 
   // String methods
 
-  private static final String crc32Format                = "%08x";
   private static final String multiPartSubjectFormat     = "%s [%d/%d] - \"%s\" yEnc (%d/%d)";
   private static final String multiPartHeaderFormat      = "=ybegin part=%d total=%d line=%d size=%d name=%s\r\n=ypart begin=%d end=%d\r\n";
-  private static final String multiPartTrailerFormat     = "=yend size=%d part=%d pcrc32=%s\r\n.\r\n";
-  private static final String multiPartTrailerLastFormat = "=yend size=%d part=%d pcrc32=%s crc32=%s\r\n.\r\n";
-
-  private static final String crc32ToString(final long crc32) {
-    return String.format(crc32Format, crc32);
-  }
+  private static final String multiPartTrailerFormat     = "=yend size=%d part=%d pcrc32=%08x\r\n.\r\n";
+  private static final String multiPartTrailerLastFormat = "=yend size=%d part=%d pcrc32=%08x crc32=%08x\r\n.\r\n";
 
   public static final byte[] multiPartSubject(final String comment1, final long fileNumber, final long totalFiles, final String filename, final long partNumber, final long totalParts) {
     return String.format(multiPartSubjectFormat, comment1, fileNumber, totalFiles, filename, partNumber, totalParts).getBytes(StandardCharsets.UTF_8);
@@ -119,9 +114,9 @@ public final class YencEncoder {
     return String.format(multiPartHeaderFormat, partNumber, totalParts, lineSize, fileSize, name, beginByte, endByte).getBytes(StandardCharsets.UTF_8);
   }
   public static final byte[] multiPartTrailer(final long partSize, final long partNumber, final long pcrc32) {
-    return String.format(multiPartTrailerFormat, partSize, partNumber, crc32ToString(pcrc32)).getBytes(StandardCharsets.UTF_8);
+    return String.format(multiPartTrailerFormat, partSize, partNumber, pcrc32).getBytes(StandardCharsets.UTF_8);
   }
   public static final byte[] multiPartTrailerLast(final long partSize, final long partNumber, final long pcrc32, final long crc32) {
-    return String.format(multiPartTrailerLastFormat, partSize, partNumber, crc32ToString(crc32), crc32ToString(crc32)).getBytes(StandardCharsets.UTF_8);
+    return String.format(multiPartTrailerLastFormat, partSize, partNumber, crc32, crc32).getBytes(StandardCharsets.UTF_8);
   }
 }
