@@ -117,6 +117,6 @@ public final class YencEncoder {
     return String.format(multiPartTrailerFormat, partSize, partNumber, pcrc32).getBytes(StandardCharsets.UTF_8);
   }
   public static final byte[] multiPartTrailerLast(final long partSize, final long partNumber, final long pcrc32, final long crc32) {
-    return String.format(multiPartTrailerLastFormat, partSize, partNumber, crc32, crc32).getBytes(StandardCharsets.UTF_8);
+    return String.format(multiPartTrailerLastFormat, partSize, partNumber, pcrc32, crc32).getBytes(StandardCharsets.UTF_8);
   }
 }
