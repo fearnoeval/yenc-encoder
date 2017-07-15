@@ -7,6 +7,9 @@ import java.util.zip.CRC32;
 
 import java.io.IOException;
 
+/**
+ * A yEnc encoding library writen in Java
+ */
 public final class YencEncoder {
 
   // Disallow instantiation
@@ -52,6 +55,21 @@ public final class YencEncoder {
 
   private static final byte[] crlf = {carriageReturn, lineFeed};
 
+  /**
+   * Reads {@code articleSize} bytes or until the end of the stream from
+   * {@code source}, updates {@code crc32} and {@code pcrc32}, and writes the
+   * yEnc-encoded bytes to {@code destination}, inserting a CRLF every
+   * {@code lineSize} yEnc-encoded bytes.
+   *
+   * @param source      InputStream to read from
+   * @param destination OutputStream to write to
+   * @param articleSize size of the article
+   * @param lineSize    maximum size of each line
+   * @param crc32       CRC32 for the entire file
+   * @param pcrc32      CRC32 for the segment
+   *
+   * @throws IOException if source or destination throw an IOException
+   */
   public static void encode(final InputStream source, final OutputStream destination, final int articleSize, final int lineSize, final CRC32 crc32, final CRC32 pcrc32) throws IOException {
     final int    lastColumn = lineSize - 1;
     final byte[] escaped    = {escapeCharacter, 0};

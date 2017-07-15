@@ -1,11 +1,14 @@
 # YencEncoder
 
-A [yEnc](http://www.yenc.org/) encoding library for Java
+A [yEnc](http://www.yenc.org/) encoding library written in Java
 
-## Coming attractions
+## Public API
 
-- Defaults
-- Usage
+- [Javadocs](https://hacks.fearnoeval.com/yenc-encoder/javadocs/)
+
+## Examples
+
+- Coming soon
 
 ## License
 
